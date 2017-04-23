@@ -25,9 +25,9 @@ def parse_args():
     Parse input arguments
     """
     parser = argparse.ArgumentParser(description='Train a Fast R-CNN network')
-    parser.add_argument('--gpu', dest='gpu_id',
-                        help='GPU device id to use [0]',
-                        default=0, type=int)
+    parser.add_argument('--cpu', dest='cpu',
+                        help='CPU mode',
+                        default=None, type=str)
     parser.add_argument('--solver', dest='solver',
                         help='solver prototxt',
                         default=None, type=str)
@@ -87,7 +87,7 @@ if __name__ == '__main__':
     if args.set_cfgs is not None:
         cfg_from_list(args.set_cfgs)
 
-    cfg.GPU_ID = args.gpu_id
+
 
     print('Using config:')
     pprint.pprint(cfg)
@@ -98,8 +98,8 @@ if __name__ == '__main__':
         caffe.set_random_seed(cfg.RNG_SEED)
 
     # set up caffe
-    caffe.set_mode_gpu()
-    caffe.set_device(args.gpu_id)
+    caffe.set_mode_cpu()
+
 
     imdb, roidb = combined_roidb(args.imdb_name)
     print '{:d} roidb entries'.format(len(roidb))

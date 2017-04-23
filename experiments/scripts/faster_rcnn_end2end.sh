@@ -12,10 +12,10 @@ set -e
 
 export PYTHONUNBUFFERED="True"
 
-GPU_ID=$1
-NET=$2
+GPU_ID="--cpu 1"
+NET=$1
 NET_lc=${NET,,}
-DATASET=$3
+DATASET=$2
 
 array=( $@ )
 len=${#array[@]}
@@ -48,7 +48,7 @@ LOG="experiments/logs/faster_rcnn_end2end_${NET}_${EXTRA_ARGS_SLUG}.txt.`date +'
 exec &> >(tee -a "$LOG")
 echo Logging output to "$LOG"
 
-time ./tools/train_net.py --gpu ${GPU_ID} \
+time ./tools/train_net.py  ${GPU_ID} \
   --solver models/${PT_DIR}/${NET}/faster_rcnn_end2end/solver.prototxt \
   --weights data/imagenet_models/${NET}.v2.caffemodel \
   --imdb ${TRAIN_IMDB} \
